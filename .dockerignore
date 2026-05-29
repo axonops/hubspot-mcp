@@ -1,0 +1,33 @@
+# VCS / CI
+.git
+.github
+.gitignore
+
+# Python caches & build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Tests are not needed in the image
+tests/
+
+# Local secrets / editor / OS
+.env
+.env.local
+.vscode/
+.idea/
+.DS_Store
+excalidraw.log
