@@ -203,6 +203,27 @@ The image runs as a non-root user and serves OAuth/HTTP mode on port 8000. Put a
 TLS-terminating reverse proxy in front so `HUBSPOT_SERVER_URL` is reachable over
 `https`.
 
+### Health endpoints (Kubernetes)
+
+In oauth/HTTP mode the server exposes two unauthenticated probe endpoints:
+
+- `GET /healthz` — liveness (process is up and serving HTTP).
+- `GET /readyz` — readiness (config loaded; no outbound HubSpot call, so HubSpot
+  latency or per-user token state can't flip it).
+
+```yaml
+livenessProbe:
+  httpGet: { path: /healthz, port: 8000 }
+  initialDelaySeconds: 5
+  periodSeconds: 10
+readinessProbe:
+  httpGet: { path: /readyz, port: 8000 }
+  initialDelaySeconds: 5
+  periodSeconds: 10
+```
+
+(Token/stdio mode has no HTTP server, so probes apply to oauth deployments.)
+
 ### CI / releases
 
 `.github/workflows/docker.yml` runs the test suite, then builds the image and

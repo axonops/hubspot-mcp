@@ -36,7 +36,6 @@ HUBSPOT_TOKEN_INFO_URL = "https://api.hubapi.com/oauth/v1/access-tokens"
 # A sensible default scope set for CRM + marketing automation. Override with
 # HUBSPOT_SCOPES. These must also be enabled on the HubSpot app itself.
 DEFAULT_SCOPES = [
-    "oauth",
     "crm.objects.contacts.read",
     "crm.objects.contacts.write",
     "crm.objects.companies.read",

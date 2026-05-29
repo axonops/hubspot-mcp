@@ -8,7 +8,10 @@ all tool modules.
 from __future__ import annotations
 
 from fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
+from . import __version__
 from .auth import build_auth
 from .client import HubSpotClient
 from .config import Settings, load_settings
@@ -46,3 +49,21 @@ def get_client() -> HubSpotClient:
 
 
 register_all(mcp, get_client)
+
+
+# Unauthenticated health endpoints for Kubernetes probes (HTTP/oauth mode).
+# These are plain HTTP routes outside the MCP protocol and require no token.
+@mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)
+async def healthz(_request: Request) -> JSONResponse:
+    """Liveness: the process is up and serving HTTP."""
+    return JSONResponse({"status": "ok", "service": "hubspot-mcp", "version": __version__})
+
+
+@mcp.custom_route("/readyz", methods=["GET"], include_in_schema=False)
+async def readyz(_request: Request) -> JSONResponse:
+    """Readiness: configuration loaded and ready to accept requests.
+
+    Kept dependency-free (no outbound HubSpot call) so the probe can't be made
+    to fail by HubSpot latency or per-user token state.
+    """
+    return JSONResponse({"status": "ready", "auth_mode": settings.auth_mode})
