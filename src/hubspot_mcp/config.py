@@ -42,6 +42,8 @@ DEFAULT_SCOPES = [
     "crm.objects.companies.write",
     "crm.objects.deals.read",
     "crm.objects.deals.write",
+    "crm.objects.owners.read",
+    "crm.objects.products.read",
     "crm.schemas.contacts.read",
     "crm.lists.read",
     "crm.lists.write",
@@ -49,8 +51,11 @@ DEFAULT_SCOPES = [
     "marketing.campaigns.read",
     "marketing.campaigns.write",
     "transactional-email",
+    "communication_preferences.read",
     "communication_preferences.read_write",
     "automation",
+    "automation.sequences.read",
+    "automation.sequences.enrollments.write",
 ]
 
 
