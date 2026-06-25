@@ -99,20 +99,26 @@ that the request omits, authorization fails with "provided scopes are missing".
 | `marketing.campaigns.read` / `.write` | campaigns tools — **needs Marketing Hub Pro+** |
 | `marketing.campaigns.revenue.read` | `hubspot_get_campaign_revenue` |
 | `content` | marketing emails CRUD + statistics |
-| `marketing-email` | marketing email publish/unpublish + v4 single-send |
-| `transactional-email` | transactional single-send — **needs the Transactional Email add-on** |
 | `forms` | forms tools |
 | `crm.objects.marketing_events.read` / `.write` | marketing events tools |
 | `communication_preferences.read` / `.read_write` | subscriptions tools |
 | `automation` | workflow / flow tools |
 | `automation.sequences.read`, `automation.sequences.enrollments.write` | reserved (no tool yet); kept so requests satisfy the app's required scopes — **needs Sales/Service Pro** |
 
-> Note: scopes depend on the portal's subscription. `marketing.campaigns.*` needs
-> Marketing Hub **Professional+** and `content` needs Marketing/Content Hub. Custom
-> objects (`crm.objects.custom.*`) need **Enterprise** and are **not** requested by
-> default — add them via `HUBSPOT_SCOPES` only on an Enterprise portal, since
-> requesting an ungranted scope can fail authorization. Correct scopes won't help
-> if the portal lacks the underlying product — the API still returns 403.
+> Note: scopes depend on the portal's subscription, and **requesting a scope the
+> portal can't grant fails the whole authorization**. Several scopes are therefore
+> **not** requested by default and must be added via `HUBSPOT_SCOPES` only on a
+> portal that has the matching product:
+>
+> | Opt-in scope | Requires | Unlocks |
+> |--------------|----------|---------|
+> | `crm.objects.custom.read` / `.write` | Enterprise | custom objects + object-schema tools |
+> | `marketing-email` | Marketing Hub (paid) | marketing email publish/unpublish, v4 single-send |
+> | `transactional-email` | Transactional Email add-on | transactional single-send |
+>
+> Also note `marketing.campaigns.*` needs Marketing Hub **Professional+** and
+> `content` needs Marketing/Content Hub — these are requested by default but still
+> return 403 if the portal lacks the product.
 
 ## Prerequisites
 

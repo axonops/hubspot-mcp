@@ -61,8 +61,12 @@ DEFAULT_SCOPES = [
     "marketing.campaigns.revenue.read",  # campaign revenue report tool
     # ── Marketing: emails & forms (Marketing/Content Hub) ───────────────────────
     "content",  # marketing emails CRUD + statistics
-    "marketing-email",  # marketing email publish/unpublish + v4 single-send
-    "transactional-email",  # transactional single-send (Transactional Email add-on)
+    # NB: marketing-email and transactional-email are intentionally omitted — they
+    # require Marketing Hub levels / the paid Transactional Email add-on that not
+    # every portal has, and requesting an ungranted scope fails authorization. With
+    # them omitted, email publish/unpublish and the single-send tools will 403 at
+    # call time, but everything else still authorizes. Add them via HUBSPOT_SCOPES
+    # on a portal that has the corresponding subscription.
     "forms",  # forms tools
     # ── Marketing: events ───────────────────────────────────────────────────────
     "crm.objects.marketing_events.read",
