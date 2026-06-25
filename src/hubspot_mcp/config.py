@@ -45,8 +45,10 @@ DEFAULT_SCOPES = [
     "crm.objects.deals.write",
     "crm.objects.products.read",  # products / line items
     "crm.objects.products.write",
-    "crm.objects.custom.read",  # custom objects + object-schema tools
-    "crm.objects.custom.write",
+    # NB: custom objects (crm.objects.custom.*) require an Enterprise plan and are
+    # intentionally omitted — requesting them on a non-Enterprise portal can make
+    # HubSpot reject the whole authorization. The object-schema tools and custom
+    # object_type values will 403 at call time without them.
     "tickets",  # ticket records (single combined read/write scope)
     "crm.objects.owners.read",  # owners tools
     "crm.schemas.contacts.read",  # property / schema reads

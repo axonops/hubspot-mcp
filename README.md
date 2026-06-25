@@ -92,7 +92,6 @@ that the request omits, authorization fails with "provided scopes are missing".
 | `crm.objects.companies.read` / `.write` | companies |
 | `crm.objects.deals.read` / `.write` | deals |
 | `crm.objects.products.read` / `.write` | products / line items |
-| `crm.objects.custom.read` / `.write` | custom objects + `hubspot_*_object_schema` tools |
 | `tickets` | ticket records |
 | `crm.objects.owners.read` | owners tools |
 | `crm.schemas.contacts.read` | property / schema reads |
@@ -108,10 +107,12 @@ that the request omits, authorization fails with "provided scopes are missing".
 | `automation` | workflow / flow tools |
 | `automation.sequences.read`, `automation.sequences.enrollments.write` | reserved (no tool yet); kept so requests satisfy the app's required scopes — **needs Sales/Service Pro** |
 
-> Note: marketing scopes depend on the portal's subscription. `marketing.campaigns.*`
-> needs Marketing Hub **Professional+**, `crm.objects.custom.*` needs **Enterprise**,
-> and `content` needs Marketing/Content Hub. Correct scopes won't help if the
-> portal lacks the underlying product — the API still returns 403.
+> Note: scopes depend on the portal's subscription. `marketing.campaigns.*` needs
+> Marketing Hub **Professional+** and `content` needs Marketing/Content Hub. Custom
+> objects (`crm.objects.custom.*`) need **Enterprise** and are **not** requested by
+> default — add them via `HUBSPOT_SCOPES` only on an Enterprise portal, since
+> requesting an ungranted scope can fail authorization. Correct scopes won't help
+> if the portal lacks the underlying product — the API still returns 403.
 
 ## Prerequisites
 
