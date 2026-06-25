@@ -36,24 +36,43 @@ HUBSPOT_TOKEN_INFO_URL = "https://api.hubapi.com/oauth/v1/access-tokens"
 # A sensible default scope set for CRM + marketing automation. Override with
 # HUBSPOT_SCOPES. These must also be enabled on the HubSpot app itself.
 DEFAULT_SCOPES = [
-    "crm.objects.contacts.read",
+    # ── CRM object records (generic object/engagement/association tools) ────────
+    "crm.objects.contacts.read",  # contacts + notes/tasks engagements
     "crm.objects.contacts.write",
     "crm.objects.companies.read",
     "crm.objects.companies.write",
     "crm.objects.deals.read",
     "crm.objects.deals.write",
-    "crm.objects.owners.read",
-    "crm.objects.products.read",
-    "crm.schemas.contacts.read",
+    "crm.objects.products.read",  # products / line items
+    "crm.objects.products.write",
+    "crm.objects.custom.read",  # custom objects + object-schema tools
+    "crm.objects.custom.write",
+    "tickets",  # ticket records (single combined read/write scope)
+    "crm.objects.owners.read",  # owners tools
+    "crm.schemas.contacts.read",  # property / schema reads
+    # ── Lists ──────────────────────────────────────────────────────────────────
     "crm.lists.read",
     "crm.lists.write",
-    "content",
+    # ── Marketing: campaigns (needs Marketing Hub Pro+) ─────────────────────────
     "marketing.campaigns.read",
     "marketing.campaigns.write",
-    "transactional-email",
+    "marketing.campaigns.revenue.read",  # campaign revenue report tool
+    # ── Marketing: emails & forms (Marketing/Content Hub) ───────────────────────
+    "content",  # marketing emails CRUD + statistics
+    "marketing-email",  # marketing email publish/unpublish + v4 single-send
+    "transactional-email",  # transactional single-send (Transactional Email add-on)
+    "forms",  # forms tools
+    # ── Marketing: events ───────────────────────────────────────────────────────
+    "crm.objects.marketing_events.read",
+    "crm.objects.marketing_events.write",
+    # ── Subscriptions / communication preferences ───────────────────────────────
     "communication_preferences.read",
     "communication_preferences.read_write",
+    # ── Automation: workflows / flows ───────────────────────────────────────────
     "automation",
+    # ── Automation: sequences (Sales/Service Pro). Not yet called by any tool, but
+    #    the registered HubSpot app marks them required, so they must be requested
+    #    for authorization to succeed. ───────────────────────────────────────────
     "automation.sequences.read",
     "automation.sequences.enrollments.write",
 ]

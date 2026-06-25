@@ -81,13 +81,37 @@ The mode is set by `HUBSPOT_AUTH_MODE`, or inferred: `oauth` if
 
 ### Scopes for marketing automation
 
-- CRM: `crm.objects.contacts.read/write`, `...companies...`, `...deals...`,
-  plus `crm.schemas.*` for custom objects.
-- Marketing: `marketing.campaigns.read/write`, `content` (marketing emails &
-  forms), `transactional-email` (transactional sends),
-  `communication_preferences.read_write`, `crm.lists.read/write`, and
-  `automation` (workflows/flows).
-- Marketing events: `marketing-events`.
+These are the defaults (`DEFAULT_SCOPES` in `config.py`), derived from the OAuth
+scopes declared in HubSpot's official OpenAPI specs. **Every scope you request
+must also be enabled on the HubSpot app** — if the app marks a scope *required*
+that the request omits, authorization fails with "provided scopes are missing".
+
+| Scope | Tools / API it unlocks |
+|-------|------------------------|
+| `crm.objects.contacts.read` / `.write` | contacts via object tools; also notes & tasks engagements |
+| `crm.objects.companies.read` / `.write` | companies |
+| `crm.objects.deals.read` / `.write` | deals |
+| `crm.objects.products.read` / `.write` | products / line items |
+| `crm.objects.custom.read` / `.write` | custom objects + `hubspot_*_object_schema` tools |
+| `tickets` | ticket records |
+| `crm.objects.owners.read` | owners tools |
+| `crm.schemas.contacts.read` | property / schema reads |
+| `crm.lists.read` / `.write` | lists tools |
+| `marketing.campaigns.read` / `.write` | campaigns tools — **needs Marketing Hub Pro+** |
+| `marketing.campaigns.revenue.read` | `hubspot_get_campaign_revenue` |
+| `content` | marketing emails CRUD + statistics |
+| `marketing-email` | marketing email publish/unpublish + v4 single-send |
+| `transactional-email` | transactional single-send — **needs the Transactional Email add-on** |
+| `forms` | forms tools |
+| `crm.objects.marketing_events.read` / `.write` | marketing events tools |
+| `communication_preferences.read` / `.read_write` | subscriptions tools |
+| `automation` | workflow / flow tools |
+| `automation.sequences.read`, `automation.sequences.enrollments.write` | reserved (no tool yet); kept so requests satisfy the app's required scopes — **needs Sales/Service Pro** |
+
+> Note: marketing scopes depend on the portal's subscription. `marketing.campaigns.*`
+> needs Marketing Hub **Professional+**, `crm.objects.custom.*` needs **Enterprise**,
+> and `content` needs Marketing/Content Hub. Correct scopes won't help if the
+> portal lacks the underlying product — the API still returns 403.
 
 ## Prerequisites
 
